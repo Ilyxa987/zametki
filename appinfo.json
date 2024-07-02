@@ -1,0 +1,13 @@
+{
+  "id": "com.zam.app",
+  "version": "1.0.2",
+  "vendor": "My Company",
+  "type": "web",
+  "main": "index.html",
+  "title": "zametki",
+  "icon": "icon.png",
+  "requiredPermissions": [
+    "time.query",
+    "activity.operation"
+  ]
+}
