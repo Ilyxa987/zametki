@@ -1,0 +1,166 @@
+<!--
+Copyright (c) 2020-2024 LG Electronics Inc.
+
+SPDX-License-Identifier: Apache-2.0
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zametki</title>
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        width: 100%;
+        height: 15vh;
+        background-color:#d88b27;
+    }
+    body {
+        width: 100%;
+        height: 100%;
+        background-color:#7fc7ff;
+    }
+    div {
+        position:absolute;
+        height:100%;
+        width:100%;
+        display: table;
+    }
+    h1 {
+        display: table-cell;
+        vertical-align: middle;
+        text-align:center;
+        color:#FFFFFF;
+    }
+    .add-btn {
+        width: 70vh;
+        height: 15vh;
+        font-size: large;
+        background-color:#d88b27;
+    }
+    .del-btn {
+        width: 70vh;
+        height: 15vh;
+        font-size: large;
+        background-color:#d88b27;
+    }
+    
+    .container {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .zametka {
+      display: grid;
+      height: 15vh;
+      width: 15vh;
+      padding: 10px 20px;
+    }
+
+    .input {
+      width: 597x; /* Ширина поля с учетом padding */
+      height: 420px; /* Высота */
+      background: url(sticker1.png) no-repeat; /* Фон */
+      background-size: 100%;
+      padding: 0 10px; /* Поля */
+      border: none; /* Убираем рамку */
+      font-size: 2em; /* Размер текста */
+      line-height: 46px; /* Выравниваем по  центру в IE */
+    }
+</style>
+</head>
+<body>
+    <header>
+        <button class="add-btn" onclick=add_img()>
+            Создать
+        </button>
+        <button class="del-btn" id="bt" onclick=del_zam()>
+            Удалить
+        </button>
+    </header>
+    <div class="container" id="gri">
+      
+      </div>
+    </div>
+</body>
+<script type="text/javascript">
+  var getcol = 0;
+  var del = 0;
+  while (localStorage.getItem(getcol) != null && localStorage.getItem(getcol).slice(0, 2) == 'ok') {
+    const cont = document.getElementById('gri');
+    const input = document.createElement('textarea');
+
+    input.type = 'text';
+    input.className = "input";
+    input.id = 'in' + getcol;
+    input.value = localStorage.getItem(getcol).slice(2);
+    cont.append(input);
+
+    input.addEventListener('input', function() {
+      const inputValue = input.value;
+      localStorage.setItem(input.id.slice(2), 'ok' + inputValue);
+    });
+
+    input.addEventListener('click', function() {
+      if (del == 1) {
+        var id = input.id.slice(2);
+        input.remove();
+        del = 0;
+        localStorage.removeItem(id);
+        id++;
+        while (localStorage.getItem(id) != null) {
+          localStorage.setItem(id - 1, localStorage.getItem(id));
+          document.getElementById('in' + id).id = 'in' + (id - 1);
+          id++;
+        }
+        localStorage.removeItem(id - 1);
+      }
+    });
+
+    getcol++;
+  }
+  var colvo = getcol;
+
+  function add_img() {
+    const cont = document.getElementById('gri');
+    const input = document.createElement('textarea');
+
+    input.type = 'text';
+    input.className = "input";
+    input.id = 'in' + colvo; 
+    cont.append(input);
+    localStorage.setItem(colvo, 'ok');
+    
+    input.addEventListener('input', function() {
+      const inputValue = input.value;
+      localStorage.setItem(input.id.slice(2), 'ok' + inputValue);
+    });
+
+    input.addEventListener('click', function() {
+      if (del == 1) {
+        var id = input.id.slice(2);
+        input.remove();
+        del = 0;
+        localStorage.removeItem(input.id.slice(2));
+        id++;
+        while (localStorage.getItem(id) != null) {
+          localStorage.setItem(id - 1, localStorage.getItem(id));
+          document.getElementById('in' + id).id = 'in' + (id - 1);
+          id++;
+        }
+        localStorage.removeItem(id - 1);
+      }
+    });
+
+    colvo++;
+  }
+
+  function del_zam() {
+    del = 1;
+  }
+</script>
+</html>
